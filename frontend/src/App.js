@@ -4,11 +4,19 @@ import * as tf from "@tensorflow/tfjs";
 import * as cocossd from "@tensorflow-models/coco-ssd";
 import Webcam from "react-webcam";
 import "./App.css";
+import { useSpeechSynthesis } from "react-speech-kit";
 import { drawRect } from "./utilities";
 
 function App() {
+  const { speak } = useSpeechSynthesis();
+  const [detectedClass, setDetectedClass] = useState('')
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
+
+  // useEffect(() => {
+  //   // speak({ text: detectedClass })
+  //   console.log('Class changed!')
+  // }, [detectedClass])
 
   // Main function
   const runCoco = async () => {
@@ -45,7 +53,7 @@ function App() {
 
       // Draw mesh
       const ctx = canvasRef.current.getContext("2d");
-      drawRect(obj, ctx); 
+      drawRect(obj, ctx, setDetectedClass); 
     }
   };
 
@@ -53,6 +61,11 @@ function App() {
 
   return (
     <div className="App">
+      <h1 className="text-xl">Class: {detectedClass}</h1>
+      
+      <button onClick={() => speak({ text: detectedClass })}>
+        Speak
+      </button>
       <header className="App-header">
         <Webcam
           ref={webcamRef}
