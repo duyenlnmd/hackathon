@@ -1,1 +1,1 @@
-# This is a repo for our Hackathon 4.0 AUBG
+# This is source code for Team 6 at Hackathon 4.0 AUBG
