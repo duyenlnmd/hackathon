@@ -14,8 +14,7 @@
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+  min-height: 80vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -35,4 +34,22 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+/* Nikola Messed this: */
+
+.webcamCapture {
+  position: relative;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+  margin: auto;
+  overflow: hidden;
+}
+
+.webcamCapture > *{
+  display: block;
+  position: relative;
+  z-index: 100;
 }

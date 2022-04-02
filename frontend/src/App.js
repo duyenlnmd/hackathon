@@ -9,7 +9,7 @@ import { drawRect } from "./utilities";
 
 function App() {
   const { speak } = useSpeechSynthesis();
-  const [detectedClass, setDetectedClass] = useState('')
+  const [detectedClass, setDetectedClass] = useState("");
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
 
@@ -53,50 +53,47 @@ function App() {
 
       // Draw mesh
       const ctx = canvasRef.current.getContext("2d");
-      drawRect(obj, ctx, setDetectedClass); 
+      drawRect(obj, ctx, setDetectedClass);
     }
   };
 
-  useEffect(()=>{runCoco()},[]);
+  useEffect(() => {
+    runCoco();
+  }, []);
 
   return (
     <div className="App">
       <h1 className="text-xl">Class: {detectedClass}</h1>
-      
-      <button onClick={() => speak({ text: detectedClass })}>
-        Speak
-      </button>
-      <header className="App-header">
-        <Webcam
-          ref={webcamRef}
-          muted={true} 
-          style={{
-            position: "absolute",
-            marginLeft: "auto",
-            marginRight: "auto",
-            left: 0,
-            right: 0,
-            textAlign: "center",
-            zindex: 9,
-            width: 640,
-            height: 480,
-          }}
-        />
 
-        <canvas
-          ref={canvasRef}
-          style={{
-            position: "absolute",
-            marginLeft: "auto",
-            marginRight: "auto",
-            left: 0,
-            right: 0,
-            textAlign: "center",
-            zindex: 8,
-            width: 640,
-            height: 480,
-          }}
-        />
+      <button onClick={() => speak({ text: detectedClass })}>Speak</button>
+      <header className="App-header">
+        <div class="webcamCapture">
+          <Webcam
+            ref={webcamRef}
+            muted={true}
+            style={{
+              marginLeft: "auto",
+              marginRight: "auto",
+              left: 0,
+              right: 0,
+              textAlign: "center",
+              zindex: 9,
+            }}
+          />
+
+          <canvas
+            ref={canvasRef}
+            style={{
+              position: "absolute",
+              marginLeft: "auto",
+              marginRight: "auto",
+              left: 0,
+              right: 0,
+              textAlign: "center",
+              zindex: 8,
+            }}
+          />
+        </div>
       </header>
     </div>
   );
