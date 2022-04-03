@@ -11,17 +11,19 @@ import { initializeApp } from "firebase/app";
 import { getDatabase } from "firebase/database";
 import { ref, onValue, child, get } from "firebase/database";
 
+const videoConstraints = {
+  facingMode: "environment"
+};
+
 function App() {
   const { speak } = useSpeechSynthesis();
-  const [status, setStatus] = useState('off')
+  const [status, setStatus] = useState(0)
   const [detectedClass, setDetectedClass] = useState('')
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
-  // let status = 'off'
-  // console.log('rerender from parent')
 
   const buttonClickedHandler = function() {
-    speak({ text: `This is a ${detectedClass}` })
+    speak({ text: `There is a ${detectedClass}` })
   }
 
   const initializeFirebaseListener = () => {
@@ -41,15 +43,16 @@ function App() {
     const valueRef = ref(database, "value");
     onValue(valueRef, (snapshot) => {
       const data = snapshot.val();
-      setStatus(data.value)
-      console.log(data.value)
+      setStatus(data)
+      console.log(data)
     });
   }
 
   // Main function
   const runCoco = async () => {
     const net = await cocossd.load();
-    console.log("Handpose model loaded.");
+    console.log("Model loaded.");
+
     //  Loop and detect hands
     setInterval(() => {
       detect(net);
@@ -88,16 +91,11 @@ function App() {
 
   const changeHandler = (e) => {
     if (e.detail === 1) {
-      setStatus('on')
+      setStatus(1)
     } else if (e.detail === 2 || e.detail === 3){
-      setStatus('off')
+      setStatus(2)
     }
   }
-
-  // useEffect(() => {
-  //   console.log("Trigger")
-  //   speak({text:"Hello World"})
-  // }, [status])
 
   useEffect(()=>{
     runCoco()
@@ -106,19 +104,14 @@ function App() {
 
   return (
     <div className="App">
-      <h1 className="text-xl">Class: {detectedClass}</h1>
+      <h1>Class: {detectedClass}</h1>
       <Speak mode={status} object={detectedClass} />
-      <button onClick={buttonClickedHandler}>
-        Speak
-      </button>
-      <button onClick={changeHandler}>
-        Change
-      </button>
       <header className="App-header">
-        <div class="webcamCapture">
+        <div className="webcamCapture">
           <Webcam
             ref={webcamRef}
             muted={true}
+            videoConstraints={videoConstraints}
             style={{
               marginLeft: "auto",
               marginRight: "auto",
@@ -143,6 +136,12 @@ function App() {
           />
         </div>
       </header>
+      <button onClick={buttonClickedHandler}>
+        Speak
+      </button>
+      {/* <button onClick={changeHandler}>
+        Change
+      </button> */}
     </div>
   );
 }

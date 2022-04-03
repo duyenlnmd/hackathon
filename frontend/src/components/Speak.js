@@ -5,9 +5,9 @@ const Speak = (props) => {
   const { speak } = useSpeechSynthesis();
 
   useEffect(() => {
-    if (props.mode === "on") {
-      console.log("Child is rerendered");
-      speak({ text: `This is a ${props.object}` });
+    if (props.mode === 1) {
+      // console.log("Child is rerendered");
+      speak({ text: `There is a ${props.object}` });
     }
   }, [props.mode]);
 
